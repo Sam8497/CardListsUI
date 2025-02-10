@@ -21,10 +21,20 @@ const ChatLists = () => {
     }
   };
 
+  const handleAdd = () => {
+    const newItem = {
+      id: Date.now(),
+      title: "New Item",
+      body: "This is a new dynamically added item.",
+    };
+    setItems((prevItems) => [newItem, ...prevItems]);
+  };
+
   return (
     <div>
       {items.map((item) => (
         <div key={item.id}>
+          <button onClick={handleAdd}>add</button>
           <p>{item.title}</p>
           <p>{item.body}</p>
           <button onClick={() => handleDelete(item.id)}>Delete</button>
