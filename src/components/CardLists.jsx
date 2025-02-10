@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
-import "./cardlists.css";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
+import { FaPlus, FaTrash } from "react-icons/fa";
 
-const ChatLists = () => {
+import "./cardlists.css";
+
+const CardLists = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -31,17 +34,36 @@ const ChatLists = () => {
   };
 
   return (
-    <div>
-      {items.map((item) => (
-        <div key={item.id}>
-          <button onClick={handleAdd}>add</button>
-          <p>{item.title}</p>
-          <p>{item.body}</p>
-          <button onClick={() => handleDelete(item.id)}>Delete</button>
-        </div>
-      ))}
+    <div className="container">
+      <button className="add-btn" onClick={handleAdd}>
+        <FaPlus style={{ marginRight: '8px' }} /> Add New Item
+      </button>
+      <div className="card-list">
+        <AnimatePresence>
+          {items.map((item) => (
+            <motion.div
+              key={item.id}
+              className="card"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+            >
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(item.id)}
+                aria-label="Delete item"
+              >
+                <FaTrash />
+              </button>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
 
-export default ChatLists;
+export default CardLists;
